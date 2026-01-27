@@ -1,0 +1,25 @@
+{
+  "name": "@pma/build",
+  "version": "1.0.0",
+  "description": "Build tool for FiveM/RedM resources with watch mode and auto-restart",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "pma-build": "./cli.js"
+  },
+  "keywords": [
+    "fivem",
+    "redm",
+    "build",
+    "esbuild",
+    "cfx"
+  ],
+  "author": "PMA Network",
+  "license": "MIT",
+  "dependencies": {
+    "esbuild": "^0.24.2"
+  },
+  "peerDependencies": {
+    "esbuild": "^0.20.0"
+  }
+}
