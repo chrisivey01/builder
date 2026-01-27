@@ -1,11 +1,20 @@
 {
   "name": "@chrisivey01/builder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Build tool for FiveM/RedM resources with watch mode and auto-restart",
   "type": "module",
   "main": "index.js",
+  "types": "index.d.ts",
   "bin": {
     "build": "./cli.js"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "cli.js"
+  ],
+  "scripts": {
+    "prepublishOnly": "tsc index.js --declaration --allowJs --emitDeclarationOnly"
   },
   "keywords": [
     "fivem",
@@ -17,7 +26,10 @@
   "author": "Chris Ivey",
   "license": "MIT",
   "dependencies": {
-    "esbuild": "^0.24.2"
+    "esbuild": "^0.27.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "esbuild": "^0.20.0"

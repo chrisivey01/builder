@@ -3,6 +3,31 @@ import { execSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import { basename, resolve } from 'path';
 
+/**
+ * @typedef {Object} BuildConfig
+ * @property {'browser' | 'node' | 'neutral'} [platform] - The platform target
+ * @property {string | string[]} [target] - The target ES version
+ * @property {'iife' | 'cjs' | 'esm'} [format] - The output format
+ */
+
+/**
+ * @typedef {Object} BuilderOptions
+ * @property {string} [cwd] - Current working directory. Defaults to process.cwd()
+ * @property {string} [resourceName] - Name of the resource. Defaults to the basename of the cwd
+ * @property {string[]} [args] - Command line arguments. Defaults to process.argv.slice(2)
+ * @property {string} [restartEndpoint] - Endpoint for restarting the resource. Defaults to 'http://127.0.0.1:4689/rr'
+ * @property {number} [restartTimeout] - Timeout for restart requests in milliseconds. Defaults to 2000
+ * @property {number} [debounceDelay] - Debounce delay for rebuilds in milliseconds. Defaults to 500
+ * @property {number} [webDevPort] - Port for web dev server. Defaults to 5173
+ * @property {Record<string, BuildConfig>} [builds] - Build configurations for different targets
+ * @property {Record<string, string>} [define] - Additional esbuild define values
+ */
+
+/**
+ * Build a FiveM/RedM resource with optional watch mode
+ * @param {BuilderOptions} [options] - Build configuration options
+ * @returns {Promise<void>}
+ */
 export async function build(options = {}) {
     const cwd = options.cwd || process.cwd();
     const resource_name = options.resourceName || basename(resolve(cwd));
@@ -10,7 +35,7 @@ export async function build(options = {}) {
     const IS_WATCH = args.includes('--watch');
     const IS_REDM = args.includes('--redm');
     const HAS_WEB_DIR = fs.existsSync(resolve(cwd, './web'));
-    
+
     // Configuration defaults
     const config = {
         restartEndpoint: options.restartEndpoint || 'http://127.0.0.1:4689/rr',
