@@ -1,4 +1,4 @@
-# @pma/build
+# @chrisivey01/builder
 
 A build tool for FiveM/RedM resources with watch mode and auto-restart support.
 
@@ -14,11 +14,11 @@ A build tool for FiveM/RedM resources with watch mode and auto-restart support.
 ## Installation
 
 ```bash
-pnpm add -D @pma/build
+pnpm add -D @chrisivey01/builder
 # or
-npm install --save-dev @pma/build
+npm install --save-dev @chrisivey01/builder
 # or
-yarn add -D @pma/build
+yarn add -D @chrisivey01/builder
 ```
 
 ## Usage
@@ -29,12 +29,12 @@ Add to your `package.json` scripts:
 
 ```json
 {
-  "scripts": {
-    "build": "pma-build",
-    "watch": "pma-build --watch",
-    "build:redm": "pma-build --redm",
-    "watch:redm": "pma-build --watch --redm"
-  }
+	"scripts": {
+		"build": "build",
+		"watch": "build --watch",
+		"build:redm": "build --redm",
+		"watch:redm": "build --watch --redm"
+	}
 }
 ```
 
@@ -50,18 +50,18 @@ pnpm watch:redm   # Watch mode for RedM
 ### Programmatic API
 
 ```javascript
-import { build } from '@pma/build';
+import { build } from "@chrisivey01/builder";
 
 await build({
-  resourceName: 'my-resource',
-  restartEndpoint: 'http://127.0.0.1:4689/rr',
-  restartTimeout: 2000,
-  debounceDelay: 500,
-  webDevPort: 5173,
-  builds: {
-    client: { platform: 'browser', target: 'es2021', format: 'iife' },
-    server: { platform: 'node', target: 'node16', format: 'cjs' }
-  }
+	resourceName: "my-resource",
+	restartEndpoint: "http://127.0.0.1:4689/rr",
+	restartTimeout: 2000,
+	debounceDelay: 500,
+	webDevPort: 5173,
+	builds: {
+		client: { platform: "browser", target: "es2021", format: "iife" },
+		server: { platform: "node", target: "node16", format: "cjs" },
+	},
 });
 ```
 
@@ -71,14 +71,14 @@ Create a `build.config.js` in your project root:
 
 ```javascript
 export default {
-  restartEndpoint: 'http://127.0.0.1:4689/rr',
-  restartTimeout: 2000,
-  debounceDelay: 500,
-  webDevPort: 5173,
-  builds: {
-    client: { platform: 'browser', target: 'es2021', format: 'iife' },
-    server: { platform: 'node', target: 'node16', format: 'cjs' }
-  }
+	restartEndpoint: "http://127.0.0.1:4689/rr",
+	restartTimeout: 2000,
+	debounceDelay: 500,
+	webDevPort: 5173,
+	builds: {
+		client: { platform: "browser", target: "es2021", format: "iife" },
+		server: { platform: "node", target: "node16", format: "cjs" },
+	},
 };
 ```
 
@@ -88,10 +88,10 @@ The build tool automatically injects a `GAME` constant into your code:
 
 ```typescript
 // Available globally in your code
-if (GAME === 'REDM') {
-  console.log('Running on RedM');
+if (GAME === "REDM") {
+	console.log("Running on RedM");
 } else {
-  console.log('Running on FiveM');
+	console.log("Running on FiveM");
 }
 ```
 
@@ -99,7 +99,7 @@ Add this to your `types/game.d.ts`:
 
 ```typescript
 declare global {
-  const GAME: "REDM" | "FIVEM";
+	const GAME: "REDM" | "FIVEM";
 }
 
 export {};
