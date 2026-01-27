@@ -1,5 +1,5 @@
 {
-  "name": "@pma/build",
+  "name": "@pma-network/builder",
   "version": "1.0.0",
   "description": "Build tool for FiveM/RedM resources with watch mode and auto-restart",
   "type": "module",
