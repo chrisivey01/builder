@@ -1,6 +1,6 @@
 {
   "name": "@chrisivey01/builder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Build tool for FiveM/RedM resources with watch mode and auto-restart",
   "type": "module",
   "main": "index.js",
@@ -30,8 +30,5 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3"
-  },
-  "peerDependencies": {
-    "esbuild": "^0.20.0"
   }
 }
