@@ -35,10 +35,10 @@ export async function build(options = {}) {
     const IS_WATCH = args.includes('--watch');
     const IS_REDM = args.includes('--redm');
     const HAS_WEB_DIR = fs.existsSync(resolve(cwd, './web'));
-
+    const PORT = IS_REDM ? 4700 : 4689;
     // Configuration defaults
     const config = {
-        restartEndpoint: options.restartEndpoint || 'http://127.0.0.1:4689/rr',
+        restartEndpoint: options.restartEndpoint || `http://127.0.0.1:${PORT}/rr`,
         restartTimeout: options.restartTimeout || 2000,
         debounceDelay: options.debounceDelay || 500,
         webDevPort: options.webDevPort || 5173,
