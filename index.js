@@ -1,6 +1,7 @@
 import esbuild from 'esbuild';
 import { execSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
+import { networkInterfaces } from 'node:os';
 import { basename, resolve } from 'path';
 
 /**
@@ -24,6 +25,23 @@ import { basename, resolve } from 'path';
  */
 
 /**
+ * Get the local network IP address
+ * @returns {string} The local IP address or fallback to 127.0.0.1
+ */
+function getLocalIP() {
+    const nets = networkInterfaces();
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+            // Skip internal (loopback) and non-IPv4 addresses
+            if (net.family === 'IPv4' && !net.internal) {
+                return net.address;
+            }
+        }
+    }
+    return '127.0.0.1'; // Fallback to localhost
+}
+
+/**
  * Build a FiveM/RedM resource with optional watch mode
  * @param {BuilderOptions} [options] - Build configuration options
  * @returns {Promise<void>}
@@ -36,6 +54,8 @@ export async function build(options = {}) {
     const IS_REDM = args.includes('--redm');
     const HAS_WEB_DIR = fs.existsSync(resolve(cwd, './web'));
     const PORT = IS_REDM ? 4700 : 4689;
+    const SERVER_IP = getLocalIP();
+
     // Configuration defaults
     const config = {
         restartEndpoint: options.restartEndpoint || `http://127.0.0.1:${PORT}/rr`,
@@ -77,7 +97,7 @@ export async function build(options = {}) {
         if (!HAS_WEB_DIR) {
             updated = updated.replace(/\n?\s*ui_page\s+['"][^'"]*['"]\s*\n?/g, '\n');
         } else {
-            const desiredUiPage = IS_WATCH ? `ui_page 'http://127.0.0.1:${config.webDevPort}'` : "ui_page 'html/index.html'";
+            const desiredUiPage = IS_WATCH ? `ui_page 'http://${SERVER_IP}:${config.webDevPort}'` : "ui_page 'html/index.html'";
             updated = updated.match(/ui_page\s+['"][^'"]*['"]/)
                 ? updated.replace(/ui_page\s+['"][^'"]*['"]/, desiredUiPage)
                 : `${updated.trimEnd()}\n\n${desiredUiPage}\n`;
