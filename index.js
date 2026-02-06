@@ -20,15 +20,26 @@ import { basename, resolve } from 'path';
  * @property {number} [restartTimeout] - Timeout for restart requests in milliseconds. Defaults to 2000
  * @property {number} [debounceDelay] - Debounce delay for rebuilds in milliseconds. Defaults to 500
  * @property {number} [webDevPort] - Port for web dev server. Defaults to 5173
+ * @property {string} [serverIP] - Server IP address for remote access. Checks SERVER_IP or HOST env vars if not provided
  * @property {Record<string, BuildConfig>} [builds] - Build configurations for different targets
  * @property {Record<string, string>} [define] - Additional esbuild define values
  */
 
 /**
- * Get the local network IP address
- * @returns {string} The local IP address or fallback to 127.0.0.1
+ * Get the network IP address for remote access
+ * Checks environment variables first (SERVER_IP or HOST) for remote development
+ * @returns {string} The network IP address or fallback to 127.0.0.1
  */
-function getLocalIP() {
+function getNetworkIP() {
+    // Check environment variables first for remote development
+    if (process.env.SERVER_IP) {
+        return process.env.SERVER_IP;
+    }
+    if (process.env.HOST) {
+        return process.env.HOST;
+    }
+
+    // Try to get from network interfaces
     const nets = networkInterfaces();
     for (const name of Object.keys(nets)) {
         for (const net of nets[name]) {
@@ -54,7 +65,7 @@ export async function build(options = {}) {
     const IS_REDM = args.includes('--redm');
     const HAS_WEB_DIR = fs.existsSync(resolve(cwd, './web'));
     const PORT = IS_REDM ? 4700 : 4689;
-    const SERVER_IP = getLocalIP();
+    const SERVER_IP = options.serverIP || getNetworkIP();
 
     // Configuration defaults
     const config = {
