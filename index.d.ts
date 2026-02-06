@@ -48,6 +48,10 @@ export type BuilderOptions = {
      */
     webDevPort?: number;
     /**
+     * - Server IP address for remote access. Checks SERVER_IP or HOST env vars if not provided
+     */
+    serverIP?: string;
+    /**
      * - Build configurations for different targets
      */
     builds?: Record<string, BuildConfig>;
